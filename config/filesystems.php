@@ -36,6 +36,12 @@ return [
             'throw' => false,
         ],
 
+        'fixtures' => [
+            'driver' => 'local',
+            'root' => base_path('tests/Fixtures'),
+            'throw' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

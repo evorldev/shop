@@ -10,6 +10,11 @@
     </head>
     <body class="antialiased">
 
+        {{ $products[0]->thumbnail }}
+        <img class="h-40 w-auto" src="{{ $products[0]->thumbnail }}">
+        {{ $brands[0]->thumbnail }}
+        <img class="h-40 w-auto" src="{{ $brands[0]->thumbnail }}">
+
         <h2 class="pt-8">Product (Brand) - Category</h2>
         <ul class="pl-8">
             @foreach ($products as $product)
