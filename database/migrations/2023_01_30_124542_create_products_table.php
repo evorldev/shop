@@ -1,0 +1,40 @@
+<?php
+
+use App\Models\Brand;
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('slug')->unique();
+            $table->string('title');
+            $table->string('thumbnail')->nullable();
+            $table->unsignedInteger('price')->default(0);
+
+            $table->foreignIdFor(Brand::class)->constrained();
+
+            $table->timestamps();
+        });
+
+        Schema::create('category_product', function (Blueprint $table) {
+            $table->foreignIdFor(Category::class)->constrained();
+            $table->foreignIdFor(Product::class)->constrained();
+
+            $table->primary(['category_id', 'product_id']);
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('category_product');
+        Schema::dropIfExists('products');
+    }
+};

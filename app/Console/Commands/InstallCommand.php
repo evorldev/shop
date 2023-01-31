@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 class InstallCommand extends Command
 {
@@ -15,6 +16,9 @@ class InstallCommand extends Command
     {
         $this->call('storage:link');
         $this->call('migrate');
+
+        Storage::disk('public')->createDirectory('images/brands');
+        Storage::disk('public')->createDirectory('images/products');
 
         return Command::SUCCESS;
     }

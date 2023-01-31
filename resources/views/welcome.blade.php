@@ -10,5 +10,70 @@
     </head>
     <body class="antialiased">
 
+        <h2>Product (Brand) - Category</h2>
+        <ul>
+            @foreach ($products as $product)
+                <li>
+                    [{{ $product->id }}] {{ $product->title }} ([{{ $product->brand->id }}] {{ $product->brand->title }})
+
+                    <ul class="pl-8">
+                    @foreach ($product->categories as $category)
+                        <li>
+                            [{{ $category->id }}] {{ $category->title }}
+                        </li>
+                    @endforeach
+                    </ul>
+                </li>
+            @endforeach
+        </ul>
+
+        <h2>Category - Product - Brand</h2>
+        <ul>
+            @foreach ($categories as $category)
+                <li>
+                    [{{ $category->id }}] {{ $category->title }}
+
+                    <ul class="pl-8">
+                    @foreach ($category->products as $product)
+                        <li>
+                            [{{ $product->id }}] {{ $product->title }}
+
+                            <ul class="pl-8">
+                                <li>
+                                    [{{ $product->brand->id }}] {{ $product->brand->title }}
+                                </li>
+                            </ul>
+                        </li>
+                    @endforeach
+                    </ul>
+                </li>
+            @endforeach
+        </ul>
+
+        <h2>Brand - Product - Category</h2>
+        <ul>
+            @foreach ($brands as $brand)
+                <li>
+                    [{{ $brand->id }}] {{ $brand->title }}
+
+                    <ul class="pl-8">
+                    @foreach ($brand->products as $product)
+                        <li>
+                            [{{ $product->id }}] {{ $product->title }}
+
+                            <ul class="pl-8">
+                            @foreach ($product->categories as $category)
+                                <li>
+                                    [{{ $category->id }}] {{ $category->title }}
+                                </li>
+                            @endforeach
+                            </ul>
+                        </li>
+                    @endforeach
+                    </ul>
+                </li>
+            @endforeach
+        </ul>
+
     </body>
 </html>
