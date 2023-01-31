@@ -10,8 +10,8 @@
     </head>
     <body class="antialiased">
 
-        <h2>Product (Brand) - Category</h2>
-        <ul>
+        <h2 class="pt-8">Product (Brand) - Category</h2>
+        <ul class="pl-8">
             @foreach ($products as $product)
                 <li>
                     [{{ $product->id }}] {{ $product->title }} ([{{ $product->brand->id }}] {{ $product->brand->title }})
@@ -27,8 +27,8 @@
             @endforeach
         </ul>
 
-        <h2>Category - Product - Brand</h2>
-        <ul>
+        <h2 class="pt-8">Category - Product - Brand</h2>
+        <ul class="pl-8">
             @foreach ($categories as $category)
                 <li>
                     [{{ $category->id }}] {{ $category->title }}
@@ -50,8 +50,8 @@
             @endforeach
         </ul>
 
-        <h2>Brand - Product - Category</h2>
-        <ul>
+        <h2 class="pt-8">Brand - Product - Category</h2>
+        <ul class="pl-8">
             @foreach ($brands as $brand)
                 <li>
                     [{{ $brand->id }}] {{ $brand->title }}
