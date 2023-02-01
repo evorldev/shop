@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/telescope": "^4.12",
         "laravel/tinker": "^2.7",
+        "league/flysystem-read-only": "^3.0",
         "sentry/sentry-laravel": "^3.1"
     },
     "require-dev": {
