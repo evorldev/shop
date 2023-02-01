@@ -39,6 +39,7 @@ return [
         'fixtures' => [
             'driver' => 'local',
             'root' => base_path('tests/Fixtures'),
+            'read-only' => true,
             'throw' => false,
         ],
 
