@@ -13,6 +13,17 @@ class ImageProvider extends Base
     public function imageFromFixtures(string $sourceDirectory = 'images', string $targetDirectory = 'images'): string
     {
         try {
+            // Storage::disk('public')->makeDirectory($targetDirectory);
+
+            // $file = $this->generator->file(
+            //     base_path("tests/Fixtures/$sourceDirectory"),
+            //     Storage::disk('public')->path($targetDirectory),
+            //     false
+            // );
+
+            // return '/storage/' . trim($targetDirectory, '/') . '/' . $file;
+
+
             $files = Storage::disk('fixtures')->allFiles($sourceDirectory);
 
             $from = $files[array_rand($files)];
