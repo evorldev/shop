@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\ViewServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -197,6 +198,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\FakerServiceProvider::class,
 
+        ViewServiceProvider::class,
     ],
 
     /*

@@ -22,4 +22,4 @@ Route::get('/', function () {
         'brands' => Brand::with(['products', 'products.categories'])->get(),
         'categories' => Category::with(['products', 'products.brand'])->get(),
     ]);
-});
+})->name('home');

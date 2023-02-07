@@ -1,84 +1,73 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>Laravel</title>
+@section('content')
+    {{ $products[0]->thumbnail }}
+    <img class="h-40 w-auto" src="{{ asset($products[0]->thumbnail) }}">
+    {{ $brands[0]->thumbnail }}
+    <img class="h-40 w-auto" src="{{ asset($brands[0]->thumbnail) }}">
 
-        @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js'])
-    </head>
-    <body class="antialiased">
+    <h2 class="pt-8">Product (Brand) - Category</h2>
+    <ul class="pl-8">
+        @foreach ($products as $product)
+            <li>
+                [{{ $product->id }}] {{ $product->title }} ([{{ $product->brand->id }}] {{ $product->brand->title }})
 
-        {{ $products[0]->thumbnail }}
-        <img class="h-40 w-auto" src="{{ $products[0]->thumbnail }}">
-        {{ $brands[0]->thumbnail }}
-        <img class="h-40 w-auto" src="{{ $brands[0]->thumbnail }}">
+                <ul class="pl-8">
+                @foreach ($product->categories as $category)
+                    <li>
+                        [{{ $category->id }}] {{ $category->title }}
+                    </li>
+                @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
 
-        <h2 class="pt-8">Product (Brand) - Category</h2>
-        <ul class="pl-8">
-            @foreach ($products as $product)
-                <li>
-                    [{{ $product->id }}] {{ $product->title }} ([{{ $product->brand->id }}] {{ $product->brand->title }})
+    <h2 class="pt-8">Category - Product - Brand</h2>
+    <ul class="pl-8">
+        @foreach ($categories as $category)
+            <li>
+                [{{ $category->id }}] {{ $category->title }}
 
-                    <ul class="pl-8">
-                    @foreach ($product->categories as $category)
-                        <li>
-                            [{{ $category->id }}] {{ $category->title }}
-                        </li>
-                    @endforeach
-                    </ul>
-                </li>
-            @endforeach
-        </ul>
+                <ul class="pl-8">
+                @foreach ($category->products as $product)
+                    <li>
+                        [{{ $product->id }}] {{ $product->title }}
 
-        <h2 class="pt-8">Category - Product - Brand</h2>
-        <ul class="pl-8">
-            @foreach ($categories as $category)
-                <li>
-                    [{{ $category->id }}] {{ $category->title }}
+                        <ul class="pl-8">
+                            <li>
+                                [{{ $product->brand->id }}] {{ $product->brand->title }}
+                            </li>
+                        </ul>
+                    </li>
+                @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
 
-                    <ul class="pl-8">
-                    @foreach ($category->products as $product)
-                        <li>
-                            [{{ $product->id }}] {{ $product->title }}
+    <h2 class="pt-8">Brand - Product - Category</h2>
+    <ul class="pl-8">
+        @foreach ($brands as $brand)
+            <li>
+                [{{ $brand->id }}] {{ $brand->title }}
 
-                            <ul class="pl-8">
-                                <li>
-                                    [{{ $product->brand->id }}] {{ $product->brand->title }}
-                                </li>
-                            </ul>
-                        </li>
-                    @endforeach
-                    </ul>
-                </li>
-            @endforeach
-        </ul>
+                <ul class="pl-8">
+                @foreach ($brand->products as $product)
+                    <li>
+                        [{{ $product->id }}] {{ $product->title }}
 
-        <h2 class="pt-8">Brand - Product - Category</h2>
-        <ul class="pl-8">
-            @foreach ($brands as $brand)
-                <li>
-                    [{{ $brand->id }}] {{ $brand->title }}
-
-                    <ul class="pl-8">
-                    @foreach ($brand->products as $product)
-                        <li>
-                            [{{ $product->id }}] {{ $product->title }}
-
-                            <ul class="pl-8">
-                            @foreach ($product->categories as $category)
-                                <li>
-                                    [{{ $category->id }}] {{ $category->title }}
-                                </li>
-                            @endforeach
-                            </ul>
-                        </li>
-                    @endforeach
-                    </ul>
-                </li>
-            @endforeach
-        </ul>
-
-    </body>
-</html>
+                        <ul class="pl-8">
+                        @foreach ($product->categories as $category)
+                            <li>
+                                [{{ $category->id }}] {{ $category->title }}
+                            </li>
+                        @endforeach
+                        </ul>
+                    </li>
+                @endforeach
+                </ul>
+            </li>
+        @endforeach
+    </ul>
+@endsection
