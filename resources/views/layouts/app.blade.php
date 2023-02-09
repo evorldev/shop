@@ -10,6 +10,8 @@
     </head>
     <body class="antialiased">
 
+        <!-- Page content -->
         @yield('content')
+
     </body>
 </html>
