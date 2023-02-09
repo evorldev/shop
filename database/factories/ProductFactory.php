@@ -16,7 +16,7 @@ class ProductFactory extends Factory
             'title' => $this->faker->unique()->words(2, true),
             'brand_id' => Brand::query()->inRandomOrder()->value('id'),
             'price' => $this->faker->numberBetween(1000, 100000),
-            'thumbnail' => $this->faker->imageFromFixtures('images/products', 'images/products'),
+            'thumbnail' => $this->faker->fixturesImage('images/products', 'images/products'),
         ];
     }
 }

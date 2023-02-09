@@ -12,6 +12,11 @@
         @if (session()->has('message'))
             {{ session('message') }}
         @endif
+        @if ($flash = flash()->get())
+            <div class="{{ $flash->class() }} p-5">
+                {{ $flash->message() }}
+            </div>
+        @endif
 
         <main class="md:min-h-screen md:flex md:items-center md:justify-center py-16 lg:py-20">
             <div class="container">

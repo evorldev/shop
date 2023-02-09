@@ -7,6 +7,7 @@ use App\Http\Requests\ResetPasswordFormRequest;
 use App\Http\Requests\SignInFormRequest;
 use App\Http\Requests\SignUpFormRequest;
 use App\Models\User;
+use App\Support\Flash\Flash;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -77,9 +78,12 @@ class AuthController extends Controller
             $request->only('email')
         );
         
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['message' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($status === Password::RESET_LINK_SENT) {
+            flash(__($status));
+            return back();
+        }
+
+        return back()->withErrors(['email' => __($status)]);
     }
 
     public function reset(string $token)
@@ -104,9 +108,12 @@ class AuthController extends Controller
             }
         );
         
-        return $status === Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('message', __($status))
-                    : back()->withErrors(['email' => [__($status)]]);
+        if ($status === Password::PASSWORD_RESET) {
+            flash(__($status));
+            return redirect()->route('login');
+        }
+
+        return back()->withErrors(['email' => [__($status)]]);
     }
 
 

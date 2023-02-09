@@ -9,6 +9,14 @@
         @vite(['resources/css/app.css', 'resources/sass/main.sass', 'resources/js/app.js'])
     </head>
     <body class="antialiased">
+        @if (session()->has('message'))
+            {{ session('message') }}
+        @endif
+        @if ($flash = flash()->get())
+            <div class="{{ $flash->class() }} p-5">
+                {{ $flash->message() }}
+            </div>
+        @endif
 
         <!-- Page content -->
         @yield('content')

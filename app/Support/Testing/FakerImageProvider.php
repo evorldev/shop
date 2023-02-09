@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Faker;
-
+namespace App\Support\Testing;
 
 use Faker\Provider\Base;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Throwable;
 
-class ImageProvider extends Base
+class FakerImageProvider extends Base
 {
-    public function imageFromFixtures(string $sourceDirectory = 'images', string $targetDirectory = 'images'): string
+    public function fixturesImage(string $sourceDirectory = 'images', string $targetDirectory = 'images'): string
     {
         try {
             // Storage::disk('public')->makeDirectory($targetDirectory);
