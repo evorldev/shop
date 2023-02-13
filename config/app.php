@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\DomainServiceProvider;
 use App\Providers\ViewServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
@@ -191,7 +192,6 @@ return [
          * Application Service Providers...
          */
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
@@ -199,6 +199,7 @@ return [
         App\Providers\FakerServiceProvider::class,
 
         ViewServiceProvider::class,
+        DomainServiceProvider::class,
     ],
 
     /*

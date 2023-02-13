@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Support\Testing\FakerImageProvider;
+use Support\Testing\FakerImageProvider;
 use Faker\{Factory, Generator};
 use Illuminate\Support\ServiceProvider;
 

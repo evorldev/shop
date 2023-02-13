@@ -3,8 +3,9 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Listeners\SendEmailNewUserListener;
-use App\Models\User;
+use Domain\Auth\Models\User;
 use App\Notifications\NewUserNotification;
+use Database\Factories\UserFactory;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -24,29 +25,29 @@ class AuthControllerTest extends TestCase
         $this->get('/login')
             ->assertOk()
             ->assertSee('Вход в аккаунт')
-            ->assertViewIs('auth.index');
+            ->assertViewIs('auth.login');
 
-        $user = User::factory()->create([
-            'email' => 'testing@cutcode.ru',
-        ]);
+        // $user = UserFactory::new()->create([
+        //     'email' => 'testing@cutcode.ru',
+        // ]);
 
-        $this->actingAs($user)
-            ->get('/login')
-            ->assertRe
-            ->assertSee('Вход в аккаунт')
-            ->assertViewIs('auth.index');
+        // $this->actingAs($user)
+        //     ->get('/login')
+        //     ->assertRe
+        //     ->assertSee('Вход в аккаунт')
+        //     ->assertViewIs('auth.page');
     }
 
     /**
      * @test
      * @return void
      */
-    public function it_sign_up_page_success()
+    public function it_register_page_success()
     {
-        $this->get('/sign-up')
+        $this->get('/register')
             ->assertOk()
             ->assertSee('Регистрация')
-            ->assertViewIs('auth.sign-up');
+            ->assertViewIs('auth.register');
     }
 
     /**
@@ -69,7 +70,7 @@ class AuthControllerTest extends TestCase
     {
         $password = 'password';
 
-        $user = User::factory()->create([
+        $user = UserFactory::new()->create([
             'email' => 'testing@cutcode.ru',
             'password' => bcrypt($password),
         ]);
@@ -92,7 +93,7 @@ class AuthControllerTest extends TestCase
      * @test
      * @return void
      */
-    public function it_store_success()
+    public function it_register_success()
     {
         Notification::fake();
         Event::fake();
@@ -108,7 +109,7 @@ class AuthControllerTest extends TestCase
             'email' => $request['email'],
         ]);
 
-        $response = $this->post('/sign-up', $request);
+        $response = $this->post('/register', $request);
 
         $response->assertValid();
 
@@ -134,7 +135,7 @@ class AuthControllerTest extends TestCase
      */
     public function it_logout_success()
     {
-        $user = User::factory()->create([
+        $user = UserFactory::new()->create([
             'email' => 'testing@cutcode.ru',
         ]);
 

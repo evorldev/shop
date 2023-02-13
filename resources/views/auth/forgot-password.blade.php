@@ -5,7 +5,7 @@
 @section('content')
     <x-forms.auth-form
         title="Забыли пароль"
-        action="{{ route('password.email') }}"
+        action="{{ route('forgot-password.handle') }}"
         method="POST"
     >
         @csrf
@@ -27,7 +27,7 @@
         <x-forms.primary-button>
             Отправить
         </x-forms.primary-button>
-        
+
         <x-slot:socialAuth>
         </x-slot:socialAuth>
 
