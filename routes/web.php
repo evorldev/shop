@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'index')->name('login');
+    Route::get('/login', 'index')
+        ->middleware(['guest'])
+        ->name('login');
     Route::post('/login', 'signIn')
-        ->middleware('throttle:auth')
+        ->middleware(['guest', 'throttle:auth'])
         ->name('signIn');
 
     Route::get('/sign-up', 'signUp')->name('signUp');
