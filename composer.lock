@@ -7715,16 +7715,16 @@
         },
         {
             "name": "laravel-lang/lang",
-            "version": "12.16.0",
+            "version": "12.16.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/lang.git",
-                "reference": "0536e0617b3ed07d4fab04b28960d611a3709eb2"
+                "reference": "8a39a41d47c82a70c1d5e6e25bc271bbcae7032a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/0536e0617b3ed07d4fab04b28960d611a3709eb2",
-                "reference": "0536e0617b3ed07d4fab04b28960d611a3709eb2",
+                "url": "https://api.github.com/repos/Laravel-Lang/lang/zipball/8a39a41d47c82a70c1d5e6e25bc271bbcae7032a",
+                "reference": "8a39a41d47c82a70c1d5e6e25bc271bbcae7032a",
                 "shasum": ""
             },
             "require": {
@@ -7786,7 +7786,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-02-11T09:51:27+00:00"
+            "time": "2023-02-13T08:31:17+00:00"
         },
         {
             "name": "laravel-lang/publisher",
