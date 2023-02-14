@@ -32,7 +32,8 @@ class FakerImageProvider extends Base
 
             Storage::disk('public')->put($to, Storage::disk('fixtures')->get($from));
 
-            return Storage::disk('public')->url($to);
+            // return Storage::disk('public')->url($to);
+            return '/storage/' . $to;
         } catch (Throwable $e) {
             return '';
         }

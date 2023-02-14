@@ -14,6 +14,9 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('title');
 
+            $table->boolean('is_on_homepage')->default(false);
+            $table->unsignedTinyInteger('order')->default(100);
+
             $table->timestamps();
         });
     }

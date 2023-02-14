@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Models\HasSlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,11 +13,22 @@ class Product extends Model
     use HasSlug;
 
     protected $fillable = [
-        'title',
         'brand_id',
+        'title',
         'price',
-        'thumbnail'
+        'thumbnail',
+        'is_on_homepage',
+        'order',
     ];
+
+    public function scopeOnHomepage(Builder $query)
+    {
+        $query->where('is_on_homepage', true)
+            ->orderBy('order')
+            ->orderBy('title')
+            ->orderBy('id')
+            ->limit(6);
+    }
 
     public function brand()
     {

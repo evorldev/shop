@@ -13,6 +13,9 @@ class CategoryFactory extends Factory
     {
         return [
             'title' => $this->faker->word(),
+
+            'is_on_homepage' => $this->faker->boolean(),
+            'order' => $this->faker->numberBetween(0, 255),
         ];
     }
 }
