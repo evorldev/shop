@@ -5,15 +5,15 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Storage;
+use Services\Thumbnails\ThumbnailsApi;
 
 class FreshCommand extends Command
 {
     use ConfirmableTrait;
 
-    protected $signature = 'shop:fresh';
+    protected $signature = 'app:fresh';
 
-    protected $description = 'Fresh DB with seed';
+    protected $description = 'Clean the images disk, Fresh the database, Seed the database';
 
     public function handle(): int
     {
@@ -21,7 +21,11 @@ class FreshCommand extends Command
             return Command::FAILURE;
         }
 
-        $this->deleteDirectories();
+        $this->newLine();
+
+        $this->components->task('Cleaning images directory', function () {
+            ThumbnailsApi::cleanImagesDisk();
+        });
 
         Artisan::call(
             'migrate:fresh',
@@ -33,26 +37,5 @@ class FreshCommand extends Command
         );
 
         return Command::SUCCESS;
-    }
-
-    private function deleteDirectories(): void
-    {
-        $directories = Storage::disk('public')->directories('images');
-
-        if (empty($directories)) {
-            $this->components->warn('Directories with images not found.');
-
-            return;
-        }
-
-        $this->components->info('Deleting directories with images.');
-
-        foreach ($directories as $directory) {
-            $this->components->task($directory, function () use ($directory) {
-                Storage::disk('public')->deleteDirectory($directory);
-            });
-        }
-
-        $this->newLine();
     }
 }

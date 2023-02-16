@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Traits\Models\HasSlug;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Support\Traits\Models\HasSlug;
 
 class Category extends Model
 {

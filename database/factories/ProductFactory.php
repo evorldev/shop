@@ -17,7 +17,7 @@ class ProductFactory extends Factory
 
             'title' => $this->faker->unique()->words(2, true),
             'price' => $this->faker->numberBetween(1000, 100000),
-            'thumbnail' => $this->faker->fixturesImage('images/products', 'images/products'),
+            'image' => $this->faker->fixturesImage('images/products', 'products/fixtures'),
 
             'is_on_homepage' => $this->faker->boolean(),
             'order' => $this->faker->numberBetween(0, 255),

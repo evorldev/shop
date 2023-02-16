@@ -3,7 +3,6 @@
 namespace Services\Telegram;
 
 use Services\Telegram\Exceptions\TelegramBotApiException;
-use Exception;
 use Illuminate\Support\Facades\Http;
 use Throwable;
 

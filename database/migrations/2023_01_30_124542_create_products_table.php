@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('slug')->unique();
             $table->string('title');
-            $table->string('thumbnail')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedInteger('price')->default(0);
 
             $table->boolean('is_on_homepage')->default(false);

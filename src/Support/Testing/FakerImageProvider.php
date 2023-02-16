@@ -3,38 +3,19 @@
 namespace Support\Testing;
 
 use Faker\Provider\Base;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Throwable;
+use Illuminate\Support\Facades\Log;
+use Services\Thumbnails\Exceptions\ThumbnailsException;
+use Services\Thumbnails\ThumbnailsApi;
 
 class FakerImageProvider extends Base
 {
-    public function fixturesImage(string $sourceDirectory = 'images', string $targetDirectory = 'images'): string
+    public function fixturesImage(string $sourceDirectory = '', string $targetDirectory = ''): string
     {
         try {
-            // Storage::disk('public')->makeDirectory($targetDirectory);
+            return ThumbnailsApi::copyImageFromFixturesToImages($sourceDirectory, $targetDirectory);
+        } catch (ThumbnailsException $e) {
+            Log::error($e->getMessage(), ['Exception' => $e->getPrevious()?->getMessage()]);
 
-            // $file = $this->generator->file(
-            //     base_path("tests/Fixtures/$sourceDirectory"),
-            //     Storage::disk('public')->path($targetDirectory),
-            //     false
-            // );
-
-            // return '/storage/' . trim($targetDirectory, '/') . '/' . $file;
-
-
-            $files = Storage::disk('fixtures')->allFiles($sourceDirectory);
-
-            $from = $files[array_rand($files)];
-            $extension = array_slice(explode('.', $from), -1)[0];
-
-            $to = Str::of($targetDirectory)->finish('/') . Str::uuid() . '.' . $extension;
-
-            Storage::disk('public')->put($to, Storage::disk('fixtures')->get($from));
-
-            // return Storage::disk('public')->url($to);
-            return '/storage/' . $to;
-        } catch (Throwable $e) {
             return '';
         }
     }

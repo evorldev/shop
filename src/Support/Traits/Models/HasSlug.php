@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Traits\Models;
+namespace Support\Traits\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 trait HasSlug
 {
- 
     protected function getSlugColumnName(): string
     {
         return 'slug';
@@ -27,8 +26,8 @@ trait HasSlug
 
     protected function makeSlug(): void
     {
-        if (!$this->{$this->getSlugColumnName()}) {
-            $slug = $_slug = Str::limit(Str::slug($this->{$this->getSlugFromColumnName()}), 200, '');
+        if (! $this->{$this->getSlugColumnName()}) {
+            $slug = $_slug = Str::limit(Str::slug($this->{$this->getSlugFromColumnName()}), 100, '');
 
             $count = 0;
             while ($this->newModelQuery()->where($this->getSlugColumnName(), 'LIKE', $slug)->exists()) {

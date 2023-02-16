@@ -1,6 +1,9 @@
+/.phpunit.cache
+/.phpunit.result.cache
 /node_modules
 /public/build
 /public/hot
+/public/images
 /public/storage
 /storage/*.key
 /vendor
@@ -8,7 +11,6 @@
 .env.backup
 .env.production
 .env.testing
-.phpunit.result.cache
 Homestead.json
 Homestead.yaml
 auth.json
