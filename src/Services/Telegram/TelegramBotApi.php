@@ -2,28 +2,27 @@
 
 namespace Services\Telegram;
 
-use Services\Telegram\Exceptions\TelegramBotApiException;
 use Illuminate\Support\Facades\Http;
+use Services\Telegram\Exceptions\TelegramBotException;
 use Throwable;
 
 final class TelegramBotApi
 {
-    public const HOST = 'https://api.telegram.org/bot';
-    public const COMMAND_SEND_MESSAGE = '/sendMessage';
+    const FORMAT_SEND_MESSAGE_URL = 'https://api.telegram.org/bot%s/sendMessage';
 
     public static function sendMessage(string $token, int $chatId, string $text): bool
     {
         try {
-            $response = Http::get(self::HOST . $token . self::COMMAND_SEND_MESSAGE, [
+            $response = Http::get(sprintf(self::FORMAT_SEND_MESSAGE_URL, $token), [
                 'chat_id' => $chatId,
                 'text' => $text,
             ])->throw()->json();
 
             return $response['ok'] ?? false;
-        } catch (Throwable $e) {
-            report(new TelegramBotApiException($e->getMessage(), $e->getCode()));
+        } catch (Throwable $th) {
+            throw new TelegramBotException('sendMessage() crashed', 0, $th);
 
-            return false;
+            // return false;
         }
     }
 }

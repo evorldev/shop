@@ -5,7 +5,9 @@ namespace App\Providers;
 use Carbon\CarbonInterval as Interval;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,25 +29,54 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Model::shouldBeStrict(!app()->isProduction());
+        // https://laravel.com/docs/9.x/eloquent#enabling-eloquent-strict-mode
+        Model::shouldBeStrict(! $this->app->isProduction());
 
-        if (app()->isProduction()) {
-            DB::listen(function ($query) {
-                if ($query->time > 100) {
-                    logger()
-                        ->channel('telegram')
-                        ->debug('Query longer than 1s: ' . $query->sql, $query->bindings);
-                }
-            });
 
-            app(Kernel::class)->whenRequestLifecycleIsLongerThan(
-                Interval::second(4),
-                function() {
-                    logger()
-                        ->channel('telegram')
-                        ->debug('whenRequestLifecycleIsLongerThan: ' . request()->url());
-                }
-            );
+        // https://laravel-news.com/laravel-9-31-0
+        if ($this->app->runningInConsole()) {
+            return;
         }
+
+        $kernel = $this->app[Kernel::class];
+        $kernel->whenRequestLifecycleIsLongerThan(
+            Interval::second($threshold = 4),
+            fn ($startedAt, $request, $response) =>
+                Log::warning(
+                    "Request lifecycle is longer than $threshold seconds.",
+                    [
+                        'url' => $request->url(),
+                        'ip' => $request->ip(),
+                        'user' => $request->user()?->id,
+                    ]
+                )
+        );
+
+
+        // // https://laravel.com/docs/9.x/database#monitoring-cumulative-query-time
+        // DB::whenQueryingForLongerThan($threshold = 500, function (Connection $connection, QueryExecuted $event) use ($threshold) {
+        //     Log::warning(
+        //         "Querying for longer than $threshold millisecond.",
+        //         [
+        //         ]
+        //     );
+        // });
+
+
+        // https://laravel.com/docs/9.x/database#listening-for-query-events
+        DB::listen(
+            function (QueryExecuted $query) {
+                if ($query->time > $threshold = 100) {
+                    Log::warning(
+                        "Query execution time longer than $threshold millisecond.",
+                        [
+                            'time' => $query->time,
+                            'sql' => $query->sql,
+                            'bindings' => $query->bindings,
+                        ]
+                    );
+                }
+            }
+        );
     }
 }
