@@ -9,14 +9,14 @@ use Services\Thumbnails\ThumbnailsApi;
 
 class FakerImageProvider extends Base
 {
-    public function fixturesImage(string $sourceDirectory = '', string $targetDirectory = ''): string
+    public function fixturesImage(string $sourceDirectory = '', string $targetDirectory = ''): ?string
     {
         try {
             return ThumbnailsApi::copyImageFromFixturesToImages($sourceDirectory, $targetDirectory);
         } catch (ThumbnailsException $e) {
             Log::error($e->getMessage(), ['Exception' => $e->getPrevious()?->getMessage()]);
 
-            return '';
+            return null;
         }
     }
 }

@@ -29,8 +29,8 @@ class ThumbnailsApi
      * Returns the path to a new file on the _Image_ disk. Or an empty srting.
      */
     public static function copyImageFromFixturesToImages(
-        string $sourceDirectory = 'images',   // tests/Fixtures/ . images . /
-        string $targetDirectory = 'fixtures'  // storage/app/images/ . fixtures . /
+        string $sourceDirectory = 'images',
+        string $targetDirectory = 'fixtures'
     ): string
     {
         try {
@@ -83,7 +83,9 @@ class ThumbnailsApi
             abort_unless(self::isSizeValid($size), 400, 'Size not allowed.');
             abort_unless(self::isMethodValid($method), 400, 'Method not allowed.');
 
-            $thumbnail = config('thumbnails.directory', self::THUMBNAILS_DIRECTORY) . "/$size/$method/$file";
+            $thumbnail =
+                config('thumbnails.directory', self::THUMBNAILS_DIRECTORY) .
+                "/$size/$method/$file";
 
             $storage = Storage::disk(self::IMAGES_DISK);
             $filePath = $storage->path($file);
@@ -94,15 +96,14 @@ class ThumbnailsApi
             if (File::exists($thumbnailPath)) {
                 Log::warning('The existing thumbnail must be returned by the server as a static file. Check symbolic links.');
 
-                return Image::make($thumbnail); // checks if the existing file is an image
+                return Image::make($thumbnailPath); // checks if the existing file is an image
             } else {
                 File::ensureDirectoryExists(File::dirname($thumbnailPath));
             }
 
             return self::makeThumbnail($filePath, $thumbnailPath, $size, $method);
         } catch (Throwable $th) {
-            // throw new ThumbnailsException('Thumbnail not found.', 404, $th);
-            throw $th;
+            throw new ThumbnailsException('Thumbnail not found.', 404, $th);
         }
     }
 
@@ -124,12 +125,17 @@ class ThumbnailsApi
         string $method
     ): InterventionImage
     {
-        $image = Image::make($filePath);
-
         [$w, $h] = explode('x', $size);
+
+        $image = Image::make($filePath);
         $image->{$method}($w, $h);
 
+
         //TODO: add watermark
+        // $file = resource_path('images/watermark.png');
+        // $watermark = Image::make($file);
+        // $image->insert($watermark, 'center');
+
 
         $image->save($thumbnailPath);
 

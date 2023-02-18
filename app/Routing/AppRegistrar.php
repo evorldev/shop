@@ -19,7 +19,7 @@ class AppRegistrar implements RouteRegistrar
         Route::get('/images/' . config('thumbnails.directory', '.thumbnails') . '/{size}/{method}/{file}', ThumbnailsController::class)
             ->where('size', '\d+x\d+')
             ->where('method', 'resize|crop|fit')
-            ->where('file', '.*\.(png|jpg|jpeg)$') // it can include directories, it's ok
+            ->where('file', '.*\.([pP][nN][gG]|[jJ][pP][eE]?[gG])$') // it can include directories, it's ok
             ->name('thumbnail');
     }
 }
