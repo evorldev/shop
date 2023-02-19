@@ -8,7 +8,8 @@ use Throwable;
 
 final class TelegramBotApi
 {
-    const FORMAT_SEND_MESSAGE_URL = 'https://api.telegram.org/bot%s/sendMessage';
+    const HOST = 'https://api.telegram.org/bot';
+    const FORMAT_SEND_MESSAGE_URL = self::HOST . '%s/sendMessage';
 
     public static function sendMessage(string $token, int $chatId, string $text): bool
     {

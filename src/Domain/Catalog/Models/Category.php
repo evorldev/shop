@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Catalog\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Domain\Catalog\Collections\CategoryCollection;
+use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Support\Traits\Models\HasSlug;
@@ -18,13 +19,14 @@ class Category extends Model
         'order',
     ];
 
-    public function scopeOnHomepage(Builder $query)
+    public function newCollection(array $models = []): CategoryCollection
     {
-        $query->where('is_on_homepage', true)
-            ->orderBy('order')
-            ->orderBy('title')
-            ->orderBy('id')
-            ->limit(6);
+        return new CategoryCollection($models);
+    }
+
+    public function newEloquentBuilder($query): CategoryQueryBuilder
+    {
+        return new CategoryQueryBuilder($query);
     }
 
     public function products()

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
+use Domain\Catalog\ViewModels\BrandViewModel;
+use Domain\Catalog\ViewModels\CategoryViewModel;
 
 class HomeController extends Controller
 {
     public function __invoke()
     {
-        $brands = Brand::OnHomepage()->get();
-        $categories = Category::OnHomepage()->get();
-        $products = Product::OnHomepage()->get();
+        $brands = BrandViewModel::make()
+            ->onHomepage();
+
+        $categories = CategoryViewModel::make()
+            ->onHomepage();
+
+        $products = Product::onHomepage()
+            ->get();
 
         return view('index', compact(
             'brands',

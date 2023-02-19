@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Catalog\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Domain\Catalog\Collections\BrandCollection;
+use Domain\Catalog\QueryBuilders\BrandQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Support\Traits\Models\HasSlug;
@@ -21,13 +22,14 @@ class Brand extends Model
         'order',
     ];
 
-    public function scopeOnHomepage(Builder $query)
+    public function newCollection(array $models = []): BrandCollection
     {
-        $query->where('is_on_homepage', true)
-            ->orderBy('order')
-            ->orderBy('title')
-            ->orderBy('id')
-            ->limit(6);
+        return new BrandCollection($models);
+    }
+
+    public function newEloquentBuilder($query): BrandQueryBuilder
+    {
+        return new BrandQueryBuilder($query);
     }
 
     public function products()
