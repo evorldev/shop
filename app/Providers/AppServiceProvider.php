@@ -9,6 +9,8 @@ use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
+use Services\Telegram\TelegramBotApi;
+use Services\Telegram\TelegramBotApiContract;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +33,10 @@ class AppServiceProvider extends ServiceProvider
     {
         // https://laravel.com/docs/9.x/eloquent#enabling-eloquent-strict-mode
         Model::shouldBeStrict(! $this->app->isProduction());
+
+
+        //TODO:
+        $this->app->bind(TelegramBotApiContract::class, TelegramBotApi::class);
 
 
         // https://laravel-news.com/laravel-9-31-0

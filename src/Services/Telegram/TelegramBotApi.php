@@ -6,10 +6,18 @@ use Illuminate\Support\Facades\Http;
 use Services\Telegram\Exceptions\TelegramBotException;
 use Throwable;
 
-final class TelegramBotApi
+class TelegramBotApi implements TelegramBotApiContract
 {
     const HOST = 'https://api.telegram.org/bot';
     const FORMAT_SEND_MESSAGE_URL = self::HOST . '%s/sendMessage';
+
+    public static function fake(): TelegramBotApiFake
+    {
+        return app()->instance(
+            TelegramBotApiContract::class,
+            new TelegramBotApiFake()
+        );
+    }
 
     public static function sendMessage(string $token, int $chatId, string $text): bool
     {
