@@ -35,8 +35,8 @@ module.exports = {
         dark: "#222",
         gray: "#454545",
         darkblue: "#1E1F43",
-				body: '#BDBECA',
-				card: '#323359',
+        body: '#BDBECA',
+        card: '#323359',
       },
     },
   },
@@ -44,6 +44,6 @@ module.exports = {
     extend: {},
   },
   plugins: [
-		require('@tailwindcss/line-clamp'),
-	],
+    require('@tailwindcss/line-clamp'),
+  ],
 }

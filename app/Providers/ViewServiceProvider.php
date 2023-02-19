@@ -24,6 +24,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Vite::macro('image', fn($asset) => $this->asset("resources/images/$asset"));
+        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}"));
     }
 }
