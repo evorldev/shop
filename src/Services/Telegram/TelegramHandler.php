@@ -5,14 +5,10 @@ namespace Services\Telegram;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Services\Telegram\Exceptions\TelegramBotException;
+use Services\Telegram\Jobs\TelegramBotApiWriteJob;
 
 class TelegramHandler extends AbstractProcessingHandler
 {
-    //TODO: implements ShouldQueue
-    // php artisan queue:table
-    // php artisan migrate
-    // QUEUE_CONNECTION=sync
-
     protected string $token;
     protected int $chatId;
 
@@ -30,15 +26,10 @@ class TelegramHandler extends AbstractProcessingHandler
             return;
         }
 
-        try {
-            TelegramBotApi::sendMessage(
-                $this->token,
-                $this->chatId,
-                $record['formatted']
-            );
-        } catch (TelegramBotException $e) {
-            //TODO:
-            // report();
-        }
+        dispatch(new TelegramBotApiWriteJob(
+            $this->token,
+            $this->chatId,
+            $record['formatted']
+        ));
     }
 }
