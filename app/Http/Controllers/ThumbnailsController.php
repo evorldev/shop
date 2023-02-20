@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Response;
-use Services\Thumbnails\ThumbnailsApi;
+use Services\Images\ThumbnailsApi;
 
 class ThumbnailsController extends Controller
 {

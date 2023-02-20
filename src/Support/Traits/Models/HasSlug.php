@@ -7,34 +7,36 @@ use Illuminate\Support\Str;
 
 trait HasSlug
 {
-    protected function getSlugColumnName(): string
+    const SLUG_LENGTH_LIMIT = 100; // max: 255 - tail
+
+    protected function slugColumn(): string
     {
         return 'slug';
     }
 
-    protected function getSlugFromColumnName(): string
+    protected function slugFromColumn(): string
     {
         return 'title';
     }
 
     protected static function bootHasSlug(): void
     {
-        static::creating(function (Model $item) {
-            $item->makeSlug();
+        static::creating(function (Model $model) {
+            $model->makeSlug();
         });
     }
 
     protected function makeSlug(): void
     {
-        if (! $this->{$this->getSlugColumnName()}) {
-            $slug = $_slug = Str::limit(Str::slug($this->{$this->getSlugFromColumnName()}), 100, '');
+        if (! $this->{$this->slugColumn()}) {
+            $slug = $_slug = Str::limit(Str::slug($this->{$this->slugFromColumn()}), self::SLUG_LENGTH_LIMIT, '');
 
             $count = 0;
-            while ($this->newModelQuery()->where($this->getSlugColumnName(), 'LIKE', $slug)->exists()) {
+            while ($this->newModelQuery()->where($this->slugColumn(), 'LIKE', $slug)->exists()) {
                 $slug = $_slug . '-' . ++$count;
             }
 
-            $this->{$this->getSlugColumnName()} = $slug;
+            $this->{$this->slugColumn()} = $slug;
         }
     }
 }

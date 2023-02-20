@@ -4,16 +4,19 @@ namespace Support\Testing;
 
 use Faker\Provider\Base;
 use Illuminate\Support\Facades\Log;
-use Services\Thumbnails\Exceptions\ThumbnailsException;
-use Services\Thumbnails\ThumbnailsApi;
+use Services\Images\Exceptions\FixturesException;
+use Services\Images\FixturesApi;
 
 class FakerImageProvider extends Base
 {
-    public function fixturesImage(string $sourceDirectory = '', string $targetDirectory = ''): ?string
+    public function fixturesImage(
+        string $sourceDirectory = '',
+        string $targetDirectory = 'fixtures'
+    ): ?string
     {
         try {
-            return ThumbnailsApi::copyImageFromFixturesToImages($sourceDirectory, $targetDirectory);
-        } catch (ThumbnailsException $e) {
+            return FixturesApi::copyImageFromFixtures($sourceDirectory, $targetDirectory);
+        } catch (FixturesException $e) {
             Log::error($e->getMessage(), ['Exception' => $e->getPrevious()?->getMessage()]);
 
             return null;

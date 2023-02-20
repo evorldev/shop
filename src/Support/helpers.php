@@ -12,3 +12,14 @@ if (! function_exists('flash')) {
         return app(Flash::class)->info($message);
     }
 }
+
+if (! function_exists('thumbnail')) {
+    function thumbnail(string $file, string $size, string $method = 'resize')
+    {
+        return route('thumbnail', [
+            'size' => $size,
+            'method' => $method,
+            'file' => $file,
+        ]);
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Services\Thumbnails\Exceptions;
+namespace Services\Images\Exceptions;
 
 use Exception;
 

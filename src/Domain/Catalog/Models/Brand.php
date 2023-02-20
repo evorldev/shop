@@ -6,14 +6,14 @@ use Domain\Catalog\Collections\BrandCollection;
 use Domain\Catalog\QueryBuilders\BrandQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Support\Traits\Models\HasImage;
 use Support\Traits\Models\HasSlug;
-use Support\Traits\Models\HasThumbnail;
 
 class Brand extends Model
 {
     use HasFactory;
     use HasSlug;
-    use HasThumbnail;
+    use HasImage;
 
     protected $fillable = [
         'title',
