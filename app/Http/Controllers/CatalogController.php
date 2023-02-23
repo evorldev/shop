@@ -12,12 +12,6 @@ class CatalogController extends Controller
     public function __invoke(?Category $category)
     {
         //TODO: Cache
-        $brands = Brand::query()
-            ->select(['id', 'title'])
-            ->has('products')
-            ->get();
-
-        //TODO: Cache
         $categories = Category::query()
             ->select(['id', 'slug', 'title'])
             ->has('products')
@@ -51,7 +45,6 @@ class CatalogController extends Controller
         //     ->get();
 
         return view('catalog.index', compact(
-            'brands',
             'categories',
             'products',
             'category',

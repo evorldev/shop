@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\CatalogServiceProvider;
 use App\Providers\DomainServiceProvider;
 use App\Providers\ViewServiceProvider;
 use Illuminate\Support\Facades\Facade;
@@ -200,6 +201,7 @@ return [
 
         ViewServiceProvider::class,
         DomainServiceProvider::class,
+        CatalogServiceProvider::class,
     ],
 
     /*
