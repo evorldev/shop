@@ -2,6 +2,7 @@
 
 namespace Domain\Catalog\Models;
 
+use App\Models\Product;
 use Domain\Catalog\Collections\CategoryCollection;
 use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

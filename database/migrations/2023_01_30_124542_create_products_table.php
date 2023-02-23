@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('image')->nullable();
             $table->unsignedInteger('price')->default(0);
+            $table->string('text')->nullable();
 
             $table->boolean('is_on_homepage')->default(false);
             $table->unsignedTinyInteger('order')->default(100);
+
+            $table->fullText(['title', 'text']);
 
             $table->timestamps();
         });

@@ -21,6 +21,7 @@ class ProductFactory extends Factory
 
             'is_on_homepage' => $this->faker->boolean(),
             'order' => $this->faker->numberBetween(0, 255),
+            'text' => $this->faker->realText(),
         ];
     }
 }
