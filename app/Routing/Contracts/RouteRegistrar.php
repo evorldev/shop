@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Routing\Contracts;
 
 use Illuminate\Contracts\Routing\Registrar;
 

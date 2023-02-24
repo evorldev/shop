@@ -2,9 +2,9 @@
 
 namespace App\Routing;
 
-use App\Contracts\RouteRegistrar;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ThumbnailsController;
+use App\Routing\Contracts\RouteRegistrar;
 use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Support\Facades\Route;
 

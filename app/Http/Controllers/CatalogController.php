@@ -3,37 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 class CatalogController extends Controller
 {
-    public function __invoke(?Category $category)
+    public function __invoke(?Category $category = null)
     {
-        //TODO: Cache
-        $categories = Category::query()
-            ->select(['id', 'slug', 'title'])
-            ->has('products')
-            ->get();
+        $categories = Cache::rememberForever('categories', function() {
+            return Category::query()
+                ->select(['id', 'slug', 'title'])
+                ->has('products')
+                ->get();
+        });
 
-        $products = Product::query()
+        $products = (is_null($category) ? Product::query() : $category->products())
             ->select(['id', 'slug', 'title', 'price', 'image'])
-            ->when(request('s'), function (Builder $query) {
-                $query->whereFullText(['title', 'text'], request('s'));
-            })
-            ->when($category->exists, function (Builder $query) use($category) {
-                $query->whereRelation(
-                    'categories',
-                    'categories.id',
-                    '=',
-                    $category->id
-                );
-            })
+            ->searched()
             ->filtered()
             ->sorted()
             ->paginate(6)
-            ->withQueryString(); //TODO: ??? withQueryString()
+            ->withQueryString();
 
         // $brands = BrandViewModel::make()
         //     ->onHomepage();

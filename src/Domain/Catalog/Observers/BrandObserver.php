@@ -7,28 +7,34 @@ use Illuminate\Support\Facades\Cache;
 
 class BrandObserver
 {
+    private function clearCache()
+    {
+        Cache::forget('brands');
+        Cache::forget('brands_homepage');
+    }
+
     public function created(Brand $brand)
     {
-        Cache::forget('brands_homepage');
+        $this->clearCache();
     }
 
     public function updated(Brand $brand)
     {
-        Cache::forget('brands_homepage');
+        $this->clearCache();
     }
 
     public function deleted(Brand $brand)
     {
-        Cache::forget('brands_homepage');
+        $this->clearCache();
     }
 
     public function restored(Brand $brand)
     {
-        Cache::forget('brands_homepage');
+        $this->clearCache();
     }
 
     public function forceDeleted(Brand $brand)
     {
-        Cache::forget('brands_homepage');
+        $this->clearCache();
     }
 }

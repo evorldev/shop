@@ -32,9 +32,16 @@ class Product extends Model
         'price' => PriceCast::class,
     ];
 
+    public function scopeSearched(Builder $query)
+    {
+        $query->when(request('s'), function (Builder $q) {
+            $q->whereFullText(['title', 'text'], request('s'));
+        });
+    }
+
     public function scopeFiltered(Builder $query)
     {
-        return app(Pipeline::class)
+        app(Pipeline::class)
             ->send($query)
             ->through(filters())
             ->thenReturn();

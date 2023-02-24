@@ -6,6 +6,7 @@ namespace App\Filters;
 use Domain\Catalog\Filters\AbstractFilter;
 use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Cache;
 
 final class BrandsFilter extends AbstractFilter
 {
@@ -29,11 +30,13 @@ final class BrandsFilter extends AbstractFilter
 
 	public function values(): array
     {
-        //TODO: Cache
-        return Brand::query()
-            ->select(['id', 'title'])
-            ->has('products')
-            ->get()
+        return
+            Cache::rememberForever('brands', function() {
+                return Brand::query()
+                    ->select(['id', 'title'])
+                    ->has('products')
+                    ->get();
+            })
             ->pluck('title', 'id')
             ->toArray();
 	}
@@ -42,4 +45,9 @@ final class BrandsFilter extends AbstractFilter
     {
         return 'catalog.filters.brands';
 	}
+
+    protected function isMultiple(): bool
+    {
+        return true;
+    }
 }

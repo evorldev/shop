@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Catalog\Filters;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Stringable;
 
 abstract class AbstractFilter implements Stringable
@@ -26,26 +27,60 @@ abstract class AbstractFilter implements Stringable
 
     abstract public function view(): string;
 
+    protected function isMultiple(): bool
+    {
+        return false;
+    }
+
     public function requestValue(string $index = null, mixed $default = null): mixed
     {
-        return request(
-            'filters.' . $this->key() . ($index ? ".$index" : ''),
-            $default
-        );
+        // filters.order
+        // filters.price.from
+        // filters.price.to
+        // filters.brands[%] == $index
+
+        $key = "filters.{$this->key()}";
+
+        if (isset($index)) {
+            if ($this->isMultiple()) {
+                $values = request($key, []);
+
+                return in_array($index, $values) ? $index : $default;
+            }
+
+            $key .= ".$index";
+        }
+
+        return request($key, $default);
     }
 
     public function name(string $index = null): string
     {
-        return str($this->key())
-            ->wrap('[', ']')
-            ->prepend('filters')
-            ->when($index, fn($str) => $str->append("[$index]"))
-            ->value();
+        // filters[order]
+        // filters[price][from]
+        // filters[price][to]
+        // filters[brands][]
+
+        $name = "filters[{$this->key()}]";
+
+        if ($this->isMultiple()) {
+            $name .= '[]';
+        } elseif (isset($index)) {
+            $name .= "[$index]";
+        }
+
+        return $name;
     }
 
     public function id(string $index = null): string
     {
-        return str($this->name($index))
+        // filters_order
+        // filters_price_from
+        // filters_price_to
+        // filters_brands_{$index}
+
+        return Str::of("filters_{$this->key()}")
+            ->when(isset($index), fn($str) => $str->append("_$index"))
             ->slug('_')
             ->value();
     }

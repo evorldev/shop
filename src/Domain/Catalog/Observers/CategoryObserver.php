@@ -7,28 +7,34 @@ use Illuminate\Support\Facades\Cache;
 
 class CategoryObserver
 {
+    private function clearCache()
+    {
+        Cache::forget('categories');
+        Cache::forget('categories_homepage');
+    }
+
     public function created(Category $category)
     {
-        Cache::forget('categories_homepage');
+        $this->clearCache();
     }
 
     public function updated(Category $category)
     {
-        Cache::forget('categories_homepage');
+        $this->clearCache();
     }
 
     public function deleted(Category $category)
     {
-        Cache::forget('categories_homepage');
+        $this->clearCache();
     }
 
     public function restored(Category $category)
     {
-        Cache::forget('categories_homepage');
+        $this->clearCache();
     }
 
     public function forceDeleted(Category $category)
     {
-        Cache::forget('categories_homepage');
+        $this->clearCache();
     }
 }
