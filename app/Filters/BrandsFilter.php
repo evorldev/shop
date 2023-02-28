@@ -25,7 +25,6 @@ final class BrandsFilter extends AbstractFilter
         return $query->when($this->requestValue(), function (Builder $q) {
             $q->whereIn('brand_id', $this->requestValue());
         });
-
 	}
 
 	public function values(): array

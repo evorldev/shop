@@ -34,12 +34,12 @@ abstract class AbstractFilter implements Stringable
 
     public function requestValue(string $index = null, mixed $default = null): mixed
     {
-        // filters.order
-        // filters.price.from
-        // filters.price.to
-        // filters.brands[%] == $index
+        // filter.order
+        // filter.price.from
+        // filter.price.to
+        // filter.brands[%] == $index
 
-        $key = "filters.{$this->key()}";
+        $key = "filter.{$this->key()}";
 
         if (isset($index)) {
             if ($this->isMultiple()) {
@@ -56,12 +56,12 @@ abstract class AbstractFilter implements Stringable
 
     public function name(string $index = null): string
     {
-        // filters[order]
-        // filters[price][from]
-        // filters[price][to]
-        // filters[brands][]
+        // filter[order]
+        // filter[price][from]
+        // filter[price][to]
+        // filter[brands][]
 
-        $name = "filters[{$this->key()}]";
+        $name = "filter[{$this->key()}]";
 
         if ($this->isMultiple()) {
             $name .= '[]';
@@ -74,12 +74,12 @@ abstract class AbstractFilter implements Stringable
 
     public function id(string $index = null): string
     {
-        // filters_order
-        // filters_price_from
-        // filters_price_to
-        // filters_brands_{$index}
+        // filter_order
+        // filter_price_from
+        // filter_price_to
+        // filter_brands_{$index}
 
-        return Str::of("filters_{$this->key()}")
+        return Str::of("filter_{$this->key()}")
             ->when(isset($index), fn($str) => $str->append("_$index"))
             ->slug('_')
             ->value();

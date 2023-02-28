@@ -12,7 +12,7 @@ use Throwable;
 class FixturesApi
 {
     const IMAGES_DISK = 'images';
-    const FiXTURES_DISK = 'fixtures';
+    const FIXTURES_DISK = 'fixtures';
 
     const NAME_GENERATOR_METHOD = 'ulid'; // ulid | uuid | orderedUuid | random
 
@@ -28,7 +28,7 @@ class FixturesApi
     {
         try {
             $imagesStorage = Storage::disk(self::IMAGES_DISK);
-            $fixuresStorage = Storage::disk(self::FiXTURES_DISK);
+            $fixuresStorage = Storage::disk(self::FIXTURES_DISK);
 
             $sourcePath = self::getSourcePath($fixuresStorage, $sourceDirectory);
 
