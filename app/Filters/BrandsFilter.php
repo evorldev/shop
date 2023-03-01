@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Filters;
+
 use Domain\Catalog\Filters\AbstractFilter;
 use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Builder;
@@ -40,7 +41,7 @@ final class BrandsFilter extends AbstractFilter
             ->toArray();
 	}
 
-	public function view(): string
+	public function view(): ?string
     {
         return 'catalog.filters.brands';
 	}

@@ -4,8 +4,8 @@ namespace App\Providers;
 
 use App\Filters\BrandsFilter;
 use App\Filters\PriceFilter;
+use App\Filters\Sorting;
 use Domain\Catalog\Filters\FilterManager;
-use Domain\Catalog\Sorters\Sorter;
 use Illuminate\Support\ServiceProvider;
 
 class CatalogServiceProvider extends ServiceProvider
@@ -32,11 +32,8 @@ class CatalogServiceProvider extends ServiceProvider
             new BrandsFilter(),
         ]);
 
-        $this->app->bind(Sorter::class, function () {
-            return new Sorter([
-                'title',
-                'price',
-            ]);
+        $this->app->bind(Sorting::class, function () {
+            return new Sorting();
         });
     }
 }

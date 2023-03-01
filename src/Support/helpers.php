@@ -1,8 +1,7 @@
 <?php
 
+use App\Filters\Sorting;
 use Domain\Catalog\Filters\FilterManager;
-use Domain\Catalog\Models\Category;
-use Domain\Catalog\Sorters\Sorter;
 use Support\Flash\Flash;
 
 if (! function_exists('flash')) {
@@ -27,34 +26,23 @@ if (! function_exists('thumbnail')) {
     }
 }
 
-if (! function_exists('sorter')) {
-    function sorter(): Sorter
+if (! function_exists('sorting')) {
+    function sorting(): Sorting
     {
-        return app(Sorter::class);
+        return app(Sorting::class);
     }
 }
 
 if (! function_exists('filters')) {
     function filters(): array
     {
-        return app(FilterManager::class)->items();
+        return filter()->filters();
     }
 }
 
-if (! function_exists('is_catalog_view')) {
-    function is_catalog_view(string $type, string $default = 'grid'): bool
+if (! function_exists('filter_manager')) {
+    function filter(): FilterManager
     {
-        return session('view', $default) === $type;
-    }
-}
-
-if (! function_exists('filter_url')) {
-    function filter_url(?Category $category, array $params = []): string
-    {
-        return route('catalog', [
-            ...request()->only(['filter', 'sort']),
-            ...$params,
-            'category' => $category,
-        ]);
+        return app(FilterManager::class);
     }
 }

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Filters;
+
 use Domain\Catalog\Filters\AbstractFilter;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -37,7 +38,7 @@ final class PriceFilter extends AbstractFilter
         ];
 	}
 
-	public function view(): string
+	public function view(): ?string
     {
         return 'catalog.filters.price';
 	}

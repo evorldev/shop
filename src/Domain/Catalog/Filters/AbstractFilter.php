@@ -10,6 +10,8 @@ use Stringable;
 
 abstract class AbstractFilter implements Stringable
 {
+    const REQUEST_KEY = 'filter';
+
     public function __invoke(Builder $query, $next)
     {
         $this->apply($query);
@@ -25,11 +27,19 @@ abstract class AbstractFilter implements Stringable
 
     abstract public function values(): array;
 
-    abstract public function view(): string;
+    public function view(): ?string
+    {
+        return null;
+    }
 
     protected function isMultiple(): bool
     {
         return false;
+    }
+
+    public function requestKey(): string
+    {
+        return self::REQUEST_KEY;
     }
 
     public function requestValue(string $index = null, mixed $default = null): mixed
@@ -39,7 +49,7 @@ abstract class AbstractFilter implements Stringable
         // filter.price.to
         // filter.brands[%] == $index
 
-        $key = "filter.{$this->key()}";
+        $key = "{$this->requestKey()}.{$this->key()}";
 
         if (isset($index)) {
             if ($this->isMultiple()) {
@@ -61,7 +71,7 @@ abstract class AbstractFilter implements Stringable
         // filter[price][to]
         // filter[brands][]
 
-        $name = "filter[{$this->key()}]";
+        $name = "{$this->requestKey()}[{$this->key()}]";
 
         if ($this->isMultiple()) {
             $name .= '[]';
@@ -79,7 +89,7 @@ abstract class AbstractFilter implements Stringable
         // filter_price_to
         // filter_brands_{$index}
 
-        return Str::of("filter_{$this->key()}")
+        return Str::of("{$this->requestKey()}_{$this->key()}")
             ->when(isset($index), fn($str) => $str->append("_$index"))
             ->slug('_')
             ->value();
@@ -87,6 +97,10 @@ abstract class AbstractFilter implements Stringable
 
     public function __toString(): string
     {
+        if (empty($this->view())) {
+            return '';
+        }
+
         return view($this->view(), [
             'filter' => $this,
         ])->render();

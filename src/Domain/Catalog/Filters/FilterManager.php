@@ -7,16 +7,27 @@ namespace Domain\Catalog\Filters;
 final class FilterManager
 {
     public function __construct(
-        protected array $items = []
+        protected array $filters = []
     ) {}
 
-    public function registerFilters(array $items): void
+    public function registerFilters(array $filters): void
     {
-        $this->items = $items;
+        $this->filters = $filters;
     }
 
-    public function items(): array
+    public function filters(): array
     {
-        return $this->items;
+        return $this->filters;
+    }
+
+    public function isActive(): bool
+    {
+        foreach ($this->filters as $filter) {
+            if ($filter->requestValue()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
