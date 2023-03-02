@@ -10,7 +10,7 @@ class BrandObserver
     private function clearCache()
     {
         Cache::forget('brands');
-        Cache::forget('brands_homepage');
+        Cache::forget('homepage.brands');
     }
 
     public function created(Brand $brand)

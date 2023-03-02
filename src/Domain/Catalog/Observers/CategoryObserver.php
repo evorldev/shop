@@ -10,7 +10,7 @@ class CategoryObserver
     private function clearCache()
     {
         Cache::forget('categories');
-        Cache::forget('categories_homepage');
+        Cache::forget('homepage.categories');
     }
 
     public function created(Category $category)

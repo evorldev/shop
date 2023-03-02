@@ -12,7 +12,12 @@ class EventServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        Brand::observe(BrandObserver::class);
-        Category::observe(CategoryObserver::class);
+        Brand::observe(
+            BrandObserver::class
+        );
+
+        Category::observe(
+            CategoryObserver::class
+        );
     }
 }

@@ -19,9 +19,7 @@ class TelegramBotApiWriteJob implements ShouldQueue
         protected string $token,
         protected string $chatId,
         protected string $message
-    )
-    {
-    }
+    ) {}
 
     public function handle()
     {

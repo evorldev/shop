@@ -13,9 +13,7 @@ final class MenuItem
     public function __construct(
         protected string $link,
         protected string $label,
-    )
-    {
-    }
+    ) {}
 
     public function link(): string
     {

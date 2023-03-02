@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\View\ViewModels\ProductViewModel;
+use Domain\Product\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductController extends Controller
 {
-    public function __invoke(Product $product = null)
+    public function __invoke(Product $product)
+    {
+        $also = $this->getAlso($product);
+
+        return (new ProductViewModel($product, $also))
+            ->view('product.show');
+    }
+
+    private function getAlso(Product $product): ?Collection
     {
         $also = null;
         try {
@@ -30,17 +40,6 @@ class ProductController extends Controller
             //throw $th;
         }
 
-
-
-        $product->load(['optionValues.option']);
-        $options = $product->optionValues->mapToGroups(function ($item) {
-            return [$item->option->title => $item];
-        });
-
-        return view('product.show', compact(
-            'product',
-            'options',
-            'also',
-        ));
+        return $also;
     }
 }

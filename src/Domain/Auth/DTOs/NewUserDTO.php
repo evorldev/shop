@@ -13,9 +13,7 @@ class NewUserDTO
         public readonly string $name,
         public readonly string $email,
         public readonly string $password
-    )
-    {
-    }
+    ) {}
 
     public static function fromRequest(Request $request)
     {

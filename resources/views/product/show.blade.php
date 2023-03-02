@@ -54,16 +54,20 @@
                 </ul>
 
                 <div class="flex items-baseline gap-4 mt-4">
-                    <div class="text-pink text-lg md:text-xl font-black">{{ $product->price }}</div>
+                    {{-- <div class="text-pink text-lg md:text-xl font-black">{{ $product->price }}</div>
+                    <div class="text-body text-md md:text-lg font-bold line-through">{{ $product->price }}</div> --}}
+                    <div class="text-body text-md md:text-lg font-bold">{{ $product->price }}</div>
                 </div>
 
-                <ul class="sm:max-w-[360px] space-y-2 mt-8">
-                    @foreach ($product->properties as $property)
-                        <li class="flex justify-between text-body">
-                            <strong>{{ $property->title }}:</strong> {{ $property->pivot->value }}
-                        </li>
-                    @endforeach
-                </ul>
+                @isset($product->json_properties)
+                    <ul class="sm:max-w-[360px] space-y-2 mt-8">
+                        @foreach ($product->json_properties as $property => $value)
+                            <li class="flex justify-between text-body">
+                                <strong>{{ $property }}:</strong> {{ $value }}
+                            </li>
+                        @endforeach
+                    </ul>
+                @endisset
 
                 <!-- Add to cart -->
                 <form class="space-y-8 mt-8">

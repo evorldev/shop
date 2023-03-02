@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\View\ViewModels\CatalogViewModel;
 use Domain\Catalog\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 
 class CatalogController extends Controller
 {
@@ -18,40 +17,12 @@ class CatalogController extends Controller
     ];
     const DEFAULT_VIEW_TYPE = 'grid';
 
-    public function __invoke(Request $request, ?Category $category = null)
+    public function __invoke(Request $request, ?Category $category = null): CatalogViewModel
     {
-        $categories = Cache::rememberForever('categories', function() {
-            return Category::query()
-                ->select(['id', 'slug', 'title'])
-                ->has('products')
-                ->get();
-        });
-
-        $products = (is_null($category) ? Product::query() : $category->products())
-            ->select(['id', 'slug', 'title', 'price', 'image'])
-            ->searched()
-            ->filtered()
-            ->sorted()
-            ->paginate(6)
-            ->withQueryString();
-
-        // $brands = BrandViewModel::make()
-        //     ->onHomepage();
-
-        // $categories = CategoryViewModel::make()
-        //     ->onHomepage();
-
-        // $products = Product::onHomepage()
-        //     ->get();
-
         $viewType = $this->getViewType($request);
 
-        return view('catalog.index', compact(
-            'categories',
-            'products',
-            'category',
-            'viewType',
-        ));
+        return (new CatalogViewModel($category, $viewType))
+            ->view('catalog.index');
     }
 
     private function getViewType(Request $request): string

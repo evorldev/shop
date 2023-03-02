@@ -9,9 +9,9 @@ class Flash
     public const MESSAGE_KEY = 'shop_flash_message';
     public const MESSAGE_CLASS_KEY = 'shop_flash_class';
 
-    public function __construct(protected Session $session)
-    {
-    }
+    public function __construct(
+        protected Session $session
+    ) {}
 
     public function get(): ?FlashMessage
     {

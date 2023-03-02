@@ -1,19 +1,22 @@
 <?php
 
-namespace App\Models;
+namespace Domain\Product\Models;
 
+use App\Jobs\ProductJsonProperties;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
-use Illuminate\Database\Eloquent\Builder;
+use Domain\Product\QueryBuilders\ProductQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Pipeline\Pipeline;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasImage;
 use Support\Traits\Models\HasSlug;
 
+/**
+ * @method static Product|ProductQueryBuilder query()
+ */
 class Product extends Model
 {
     use HasFactory;
@@ -28,39 +31,27 @@ class Product extends Model
         'is_on_homepage',
         'order',
         'text',
+        'json_properties',
     ];
 
     protected $casts = [
         'price' => PriceCast::class,
+        'json_properties' => 'array',
     ];
 
-    public function scopeSearched(Builder $query)
+    protected static function boot()
     {
-        $query->when(request('s'), function (Builder $q) {
-            $q->whereFullText(['title', 'text'], request('s'));
+        parent::boot();
+
+        static::created(function (Product $product) {
+            ProductJsonProperties::dispatch($product)
+                ->delay(now()->addSeconds(10));
         });
     }
 
-    public function scopeFiltered(Builder $query)
+    public function newEloquentBuilder($query): ProductQueryBuilder
     {
-        app(Pipeline::class)
-            ->send($query)
-            ->through(filters())
-            ->thenReturn();
-    }
-
-    public function scopeSorted(Builder $query)
-    {
-        sorting()->apply($query);
-    }
-
-    public function scopeOnHomepage(Builder $query)
-    {
-        $query->where('is_on_homepage', true)
-            ->orderBy('order')
-            ->orderBy('title')
-            ->orderBy('id')
-            ->limit(6);
+        return new ProductQueryBuilder($query);
     }
 
     public function brand(): BelongsTo

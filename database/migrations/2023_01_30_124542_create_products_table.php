@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Product;
+use Domain\Product\Models\Product;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
 use Illuminate\Database\Migrations\Migration;
