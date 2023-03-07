@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\ViewModels;
 
+use App\Http\Controllers\CatalogController;
 use Domain\Catalog\Models\Category;
 use Domain\Product\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,7 +16,7 @@ class CatalogViewModel extends ViewModel
 {
     public function __construct(
         public readonly ?Category $category = null,
-        public readonly string $viewType
+        public readonly string $viewType = CatalogController::DEFAULT_VIEW_TYPE
     ) {}
 
     public function category(): ?Category
@@ -26,7 +27,7 @@ class CatalogViewModel extends ViewModel
     public function categories(): Collection|array
     {
         return Cache::rememberForever('categories', function() {
-            Category::query()
+            return Category::query()
                 ->select(['id', 'slug', 'title'])
                 ->has('products')
                 ->get();
